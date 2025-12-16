@@ -27,26 +27,26 @@ const status = document.getElementById("status");
 const ytBtn = document.getElementById("downloadYoutube");
 const ytInput = document.getElementById("youtubeUrl");
 
-ytBtn.onclick = async () => {
-  if (!ytInput.value) return alert("Informe a URL do YouTube");
+// ytBtn.onclick = async () => {
+//   if (!ytInput.value) return alert("Informe a URL do YouTube");
 
-  status.innerText = "Baixando áudio do YouTube...";
+//   status.innerText = "Baixando áudio do YouTube...";
 
-  const res = await fetch("https://api.music-splitter.logikoz.net/youtube", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ url: ytInput.value })
-  });
+//   const res = await fetch("https://api.music-splitter.logikoz.net/youtube", {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({ url: ytInput.value })
+//   });
 
-  const blob = await res.blob();
-  const file = new File([blob], "youtube.mp3", { type: "audio/mpeg" });
+//   const blob = await res.blob();
+//   const file = new File([blob], "youtube.mp3", { type: "audio/mpeg" });
 
-  const dt = new DataTransfer();
-  dt.items.add(file);
-  fileInput.files = dt.files;
+//   const dt = new DataTransfer();
+//   dt.items.add(file);
+//   fileInput.files = dt.files;
 
-  status.innerText = "MP3 carregado. Pronto para separar.";
-};
+//   status.innerText = "MP3 carregado. Pronto para separar.";
+// };
 
 
 const ffmpeg = new FFmpeg({ log: false });
