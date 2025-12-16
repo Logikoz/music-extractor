@@ -1,0 +1,7 @@
+services:
+  mp3-splitter:
+    build: .
+    container_name: mp3-splitter
+    ports:
+      - "8080:80"
+    restart: unless-stopped

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Separador de MP3</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 40px auto;
+    }
+    textarea {
+      width: 100%;
+    }
+    button {
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    #status {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Separar MP3 por tempo</h2>
+
+<p>Selecione o MP3 original:</p>
+<input type="file" id="file" accept=".mp3">
+
+<p>Informe as faixas (uma por linha):</p>
+<textarea id="tracks" rows="10"
+placeholder="00:01 - 454 Cidadão dos Céus"></textarea>
+
+<br><br>
+<button id="process">Gerar ZIP</button>
+
+<p id="status"></p>
+
+<script type="module">
+  import { FFmpeg } from "./ffmpeg/ffmpeg-wasm/index.js";
+  import { fetchFile } from "https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/+esm";
+  import JSZip from "https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm";
+
+  const ffmpeg = new FFmpeg({
+    log: true,
+    corePath: "/ffmpeg"
+  });
+
+  const status = document.getElementById("status");
+
+  async function loadFFmpeg() {
+    if (ffmpeg.loaded) return;
+
+    status.innerText = "Carregando FFmpeg (primeira vez demora)...";
+
+    await ffmpeg.load({
+      coreURL: "/ffmpeg/ffmpeg-core.js",
+      wasmURL: "/ffmpeg/ffmpeg-core.wasm"
+    });
+  }
+
+  document.getElementById("process").onclick = async () => {
+    const fileInput = document.getElementById("file");
+    const text = document.getElementById("tracks").value.trim();
+
+    if (!fileInput.files.length || !text) {
+      alert("Selecione o MP3 e informe as faixas");
+      return;
+    }
+
+    await loadFFmpeg();
+
+    status.innerText = "Carregando arquivo...";
+
+    await ffmpeg.writeFile(
+      "input.mp3",
+      await fetchFile(fileInput.files[0])
+    );
+
+    const lines = text.split("\n").map(l => l.trim()).filter(Boolean);
+
+    const tracks = lines.map(line => {
+      const [time, name] = line.split(" - ");
+      return { time, name };
+    });
+
+    const zip = new JSZip();
+
+    for (let i = 0; i < tracks.length; i++) {
+      status.innerText = `Processando: ${tracks[i].name}`;
+
+      const args = tracks[i + 1]
+        ? ["-i", "input.mp3", "-ss", tracks[i].time, "-to", tracks[i + 1].time, "-c", "copy", "out.mp3"]
+        : ["-i", "input.mp3", "-ss", tracks[i].time, "-c", "copy", "out.mp3"];
+
+      await ffmpeg.exec(args);
+
+      const data = await ffmpeg.readFile("out.mp3");
+      zip.file(`${tracks[i].name}.mp3`, data.buffer);
+    }
+
+    status.innerText = "Gerando ZIP...";
+
+    const blob = await zip.generateAsync({ type: "blob" });
+
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "faixas.zip";
+    a.click();
+
+    status.innerText = "Concluído ✅";
+  };
+</script>
+
+</body>
+</html>
