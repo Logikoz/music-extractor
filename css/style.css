@@ -134,3 +134,34 @@ footer {
     font-size: 13px;
     opacity: 0.85;
 }
+
+.lang-switch {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.lang-switch select {
+    background: #2a2a3d;
+    color: #fff;
+    border: 1px solid #3a3a55;
+    border-radius: 6px;
+    padding: 6px 10px;
+}
+
+
+.progress {
+    width: 100%;
+    height: 10px;
+    background: #2a2a3d;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 15px;
+}
+
+#progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #4cafef;
+    transition: width 0.3s;
+}

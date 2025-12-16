@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
-    <title>Separador de MP3</title>
+    <title data-i18n="title">MP3 Splitter</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link rel="stylesheet" href="css/style.css" />
@@ -12,56 +12,66 @@
 <body>
 
     <div class="container">
-        <h1>🎵 Separador de MP3</h1>
-        <p class="subtitle">
-            Separe um MP3 grande em várias faixas usando horários
+        <div class="lang-switch">
+            <select id="language">
+                <option value="pt">Português</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+        <h1 data-i18n="title">🎵 MP3 Splitter</h1>
+        <p class="subtitle" data-i18n="subtitle">
+            Split a large MP3 file into multiple tracks using timestamps
         </p>
 
         <div class="help">
-            <h3>📘 Como usar</h3>
+            <h3 data-i18n="help_title">📘 How to use</h3>
 
             <ol>
-                <li>Selecione o arquivo <strong>MP3 original</strong></li>
-                <li>Informe as faixas, <strong>uma por linha</strong></li>
-                <li>Clique em <strong>Gerar ZIP</strong></li>
+                <li data-i18n="help_step_1">Select the original MP3 file</li>
+                <li data-i18n="help_step_2">Enter the tracks, one per line</li>
+                <li data-i18n="help_step_3">Click Generate ZIP</li>
             </ol>
 
-            <p class="help-title">Formato das faixas:</p>
+            <p class="help-title" data-i18n="format_title">Track format:</p>
 
-            <pre>
-MM:SS - Nome da música
-  </pre>
+            <pre data-i18n="format_example">
+MM:SS - Track name
+            </pre>
 
-            <p class="help-title">Exemplo:</p>
+            <p class="help-title" data-i18n="example_title">Example:</p>
 
-            <pre>
-00:01 - 454 Cidadão dos Céus
-03:10 - 106 Em nome do nosso Redentor
-06:22 - 341 Com fé espera no Senhor
-  </pre>
+            <pre data-i18n="tracks_example">
+00:01 - Track One
+03:10 - Track Two
+06:22 - Track Three
+            </pre>
 
-            <p class="help-note">
-                ℹ️ O tempo indica <strong>onde a música começa</strong>.
-                O fim de cada faixa é calculado automaticamente usando o início da próxima.
+            <p class="help-note" data-i18n="help_note">
+                ℹ️ The time indicates where the track starts.
+                The end is calculated automatically.
             </p>
         </div>
 
-
         <div class="card">
-            <label class="label">Arquivo MP3</label>
+            <label class="label" data-i18n="file_label">MP3 File</label>
             <input type="file" id="file" accept=".mp3" />
 
-            <label class="label">Faixas</label>
-            <textarea id="tracks" rows="8" placeholder="00:01 - 454 Cidadão dos Céus"></textarea>
+            <label class="label" data-i18n="tracks_label">Tracks</label>
+            <textarea id="tracks" rows="8" placeholder="00:01 - Track One"
+                data-i18n-placeholder="tracks_placeholder"></textarea>
 
-            <button id="process">Gerar ZIP</button>
+            <button id="process" data-i18n="button">Generate ZIP</button>
+            <div class="progress">
+                <div id="progress-bar"></div>
+            </div>
 
             <div id="status" class="status"></div>
         </div>
 
-        <footer>
-            Processamento 100% local no navegador
+        <footer data-i18n="footer">
+            100% local processing in your browser
         </footer>
+
     </div>
 
     <script type="module" src="js/app.js"></script>
