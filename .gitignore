@@ -1,0 +1,28 @@
+# =========================
+# Node.js (backend)
+# =========================
+backend/node_modules/
+backend/package-lock.json
+
+# =========================
+# Environment variables
+# =========================
+backend/.env
+
+# =========================
+# Temp / runtime files
+# =========================
+backend/tmp/
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

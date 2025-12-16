@@ -1,7 +1,17 @@
 services:
-  mp3-splitter:
+  frontend:
     build: .
-    container_name: mp3-splitter
+    container_name: mp3-splitter-frontend
     ports:
       - "8081:80"
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    container_name: mp3-splitter-backend
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    ports:
+      - "3000:3000"
     restart: unless-stopped
