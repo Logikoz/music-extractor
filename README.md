@@ -1,6 +1,5 @@
 ## 📘 README.md
 
-```md
 # 🎵 MP3 Splitter (FFmpeg.wasm)
 
 This project is a **100% client-side MP3 splitter** that allows you to split a large MP3 file into multiple tracks using timestamps.
@@ -9,7 +8,6 @@ All processing happens **locally in the browser** using FFmpeg.wasm.
 No files are uploaded to any server.
 
 ---
-
 ## ✨ Features
 
 - Split MP3 files by timestamps
@@ -26,19 +24,15 @@ No files are uploaded to any server.
 Each track must be written on a new line using the following format:
 
 ```
-
 MM:SS - Track Name
-
 ```
 
 ### Example:
 
 ```
-
 00:01 - Track One
 03:10 - Track Two
 06:22 - Track Three
-
 ````
 
 The start time defines where the track begins.
@@ -52,9 +46,12 @@ You must serve the files using a local HTTP server (ES Modules do not work with 
 
 ### Using Node.js
 
+
 ```bash
 npx http-server .
-````
+```
+
+
 
 Then open:
 
