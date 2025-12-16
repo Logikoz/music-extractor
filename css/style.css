@@ -1,0 +1,136 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+    font-family: Arial, sans-serif;
+    color: #fff;
+}
+
+.container {
+    max-width: 720px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    text-align: center;
+    opacity: 0.8;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: #1f1f2e;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+input[type="file"],
+textarea {
+    width: 100%;
+    background: #2a2a3d;
+    border: 1px solid #3a3a55;
+    border-radius: 8px;
+    color: #fff;
+    padding: 10px;
+}
+
+textarea {
+    resize: vertical;
+    font-family: monospace;
+}
+
+button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: #4cafef;
+    border: none;
+    border-radius: 8px;
+    color: #000;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #6fc2ff;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.status {
+    margin-top: 15px;
+    min-height: 20px;
+    font-weight: bold;
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    opacity: 0.6;
+    font-size: 13px;
+}
+
+.help {
+    background: #24243a;
+    border: 1px solid #3a3a55;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+.help h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.help ol {
+    padding-left: 20px;
+    margin: 10px 0;
+}
+
+.help li {
+    margin-bottom: 5px;
+}
+
+.help-title {
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+.help pre {
+    background: #1b1b2b;
+    border-radius: 8px;
+    padding: 10px;
+    overflow-x: auto;
+    margin: 8px 0;
+    font-family: monospace;
+    color: #9cdcfe;
+}
+
+.help-note {
+    margin-top: 10px;
+    font-size: 13px;
+    opacity: 0.85;
+}
