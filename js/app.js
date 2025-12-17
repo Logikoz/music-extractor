@@ -26,6 +26,8 @@ const status = document.getElementById("status");
 
 const ffmpeg = new FFmpeg({ log: false });
 
+const TIME_REGEX = /^\d{1,2}:\d{2}$/;
+
 async function loadFFmpeg() {
     if (ffmpeg.loaded) return;
 
@@ -35,6 +37,24 @@ async function loadFFmpeg() {
         coreURL: "/ffmpeg/ffmpeg-core.js",
         wasmURL: "/ffmpeg/ffmpeg-core.wasm"
     });
+}
+
+/**
+ * Parse line:
+ * MM:SS - Title - Artist
+ */
+function parseLine(line) {
+    const parts = line.split(" - ");
+
+    if (parts.length < 3) return null;
+
+    const time = parts[0].trim();
+    const artist = parts.pop().trim();
+    const title = parts.slice(1).join(" - ").trim();
+
+    if (!TIME_REGEX.test(time)) return null;
+
+    return { time, title, artist };
 }
 
 processBtn.onclick = async () => {
@@ -49,6 +69,7 @@ processBtn.onclick = async () => {
         await loadFFmpeg();
 
         status.innerText = lang.reading_file;
+
         await ffmpeg.writeFile(
             "input.mp3",
             new Uint8Array(await fileInput.files[0].arrayBuffer())
@@ -59,32 +80,61 @@ processBtn.onclick = async () => {
             .map(l => l.trim())
             .filter(Boolean);
 
-        const tracks = lines.map(line => {
-            const [time, name] = line.split(" - ");
-            return { time, name };
-        });
+        const tracks = lines
+            .map(parseLine)
+            .filter(Boolean);
+
+        if (!tracks.length) {
+            alert(lang.error_processing);
+            processBtn.disabled = false;
+            return;
+        }
 
         const zip = new JSZip();
 
         for (let i = 0; i < tracks.length; i++) {
-            status.innerText = `${lang.prossessing} ${tracks[i].name}`;
+            const track = tracks[i];
+            const next = tracks[i + 1];
+
+            status.innerText = `${lang.prossessing} ${track.title}`;
 
             const percent = Math.round((i / tracks.length) * 100);
             progressBar.style.width = percent + "%";
 
-            const args = tracks[i + 1]
-                ? ["-i", "input.mp3", "-ss", tracks[i].time, "-to", tracks[i + 1].time, "-c", "copy", "out.mp3"]
-                : ["-i", "input.mp3", "-ss", tracks[i].time, "-c", "copy", "out.mp3"];
+            const safeTitle = track.title.replace(/[\\/:*?"<>|]/g, "");
+            const safeArtist = track.artist.replace(/[\\/:*?"<>|]/g, "");
+
+            const args = [
+                "-i", "input.mp3",
+                "-ss", track.time,
+                ...(next ? ["-to", next.time] : []),
+
+                // 🔹 METADADOS ID3
+                "-metadata", `title=${track.title}`,
+                "-metadata", `artist=${track.artist}`,
+
+                // 🔹 Limpa metadados antigos e re-encoda
+                "-map_metadata", "-1",
+                "-vn",
+                "-acodec", "libmp3lame",
+
+                "out.mp3"
+            ];
 
             await ffmpeg.exec(args);
 
             const data = await ffmpeg.readFile("out.mp3");
-            zip.file(`${tracks[i].name}.mp3`, data.buffer);
+
+            zip.file(
+                `${safeTitle} - ${safeArtist}.mp3`,
+                data.buffer
+            );
         }
 
         progressBar.style.width = "100%";
 
         status.innerText = lang.generating_zip;
+
         const blob = await zip.generateAsync({ type: "blob" });
 
         const a = document.createElement("a");

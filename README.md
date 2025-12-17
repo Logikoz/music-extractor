@@ -24,15 +24,15 @@ No files are uploaded to any server.
 Each track must be written on a new line using the following format:
 
 ```
-MM:SS - Track Name
+MM:SS - Track Name - Author Name
 ```
 
 ### Example:
 
 ```
-00:01 - Track One
-03:10 - Track Two
-06:22 - Track Three
+00:01 - Track One - Author Name
+03:10 - Track Two - Author Name
+06:22 - Track Three - Author Name
 ````
 
 The start time defines where the track begins.
