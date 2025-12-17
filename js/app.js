@@ -23,6 +23,9 @@ const fileInput = document.getElementById("file");
 const tracksInput = document.getElementById("tracks");
 const processBtn = document.getElementById("process");
 const status = document.getElementById("status");
+const footer = document.getElementById("footer");
+
+footer.innerText = lang.footer;
 
 const ffmpeg = new FFmpeg({ log: false });
 
@@ -38,6 +41,8 @@ async function loadFFmpeg() {
         wasmURL: "/ffmpeg/ffmpeg-core.wasm"
     });
 }
+
+
 
 /**
  * Parse line:

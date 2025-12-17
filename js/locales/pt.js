@@ -18,6 +18,8 @@ export default {
   tracks_label: "Faixas",
   button: "Gerar ZIP",
 
+  footer: "Processado 100% no seu navegador",
+
   status_loading: "Carregando FFmpeg (primeira vez pode demorar)...",
   status_done: "Concluído ✅",
   error_missing: "Selecione o MP3 e informe as faixas.",

@@ -18,6 +18,8 @@ export default {
   tracks_label: "Tracks",
   button: "Generate ZIP",
 
+  footer: "100% local processing in your browser",
+
   status_loading: "Loading FFmpeg (first time may take a while)...",
   status_done: "Completed ✅",
   error_missing: "Please select an MP3 file and enter the tracks.",
