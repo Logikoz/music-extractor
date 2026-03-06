@@ -1,0 +1,45 @@
+name: Deploy Landing
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout landing repository
+        uses: actions/checkout@v4
+
+      - name: Checkout template repository
+        shell: bash
+        run: |
+          rm -rf .forgejo-templates
+          git clone "http://${{ secrets.REGISTRY_USERNAME }}:${{ secrets.REGISTRY_PASSWORD }}@git.logikoz.internal/devops/forgejo-templates.git" .forgejo-templates
+          cd .forgejo-templates
+          git checkout main
+
+      - name: Deploy using central template
+        shell: bash
+        env:
+          REGISTRY_HOST: git.logikoz.internal
+          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+          KUBECONFIG_LAB_B64: ${{ secrets.KUBECONFIG_LAB_B64 }}
+          IMAGE_REPOSITORY: ${{ github.repository }}
+          IMAGE_SHA: ${{ github.sha }}
+
+          NAMESPACE: dmz-lk-music-extractor-site
+          HOSTNAME: dmz-lk-music-extractor-site.apps2.logikoz.internal
+          PUBLIC_HOSTNAME: music-splitter.logikoz.net
+          
+          REPLICAS: "2"
+          CPU_REQUEST: 10m
+          MEMORY_REQUEST: 32Mi
+          CPU_LIMIT: 200m
+          MEMORY_LIMIT: 128Mi
+          SITE_DIR: src
+          
+        run: bash .forgejo-templates/scripts/deploy-landing.sh
